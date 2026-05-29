@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Complaint Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Complaint Form</h1>
+
+    <input type="text" id="name" placeholder="Your Name">
+
+    <input type="text" id="dept" placeholder="Department">
+
+    <textarea id="complaint" placeholder="Enter Your Complaint"></textarea>
+
+    <button onclick="submitComplaint()">Submit Complaint</button>
+
+</div>
+
+<script>
+function submitComplaint() {
+    let name = document.getElementById("name").value;
+    let dept = document.getElementById("dept").value;
+    let complaint = document.getElementById("complaint").value;
+
+    if(name === "" || dept === "" || complaint === "") {
+        alert("Please fill all fields");
+        return;
+    }
+
+    let data = {
+        name: name,
+        dept: dept,
+        complaint: complaint
+    };
+
+    let oldData = JSON.parse(localStorage.getItem("complaints")) || [];
+    oldData.push(data);
+
+    localStorage.setItem("complaints", JSON.stringify(oldData));
+
+    alert("Complaint submitted successfully!");
+
+    // clear fields
+    document.getElementById("name").value = "";
+    document.getElementById("dept").value = "";
+    document.getElementById("complaint").value = "";
+}
+</script>
+
+</body>
+</html>
