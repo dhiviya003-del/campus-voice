@@ -5,6 +5,7 @@ body{
     padding:0;
 }
 
+/* MAIN CONTAINER */
 .container{
     width:90%;
     max-width:400px;
@@ -15,11 +16,13 @@ body{
     text-align:center;
 }
 
+/* HEADINGS */
 h1{
     color:#2563eb;
 }
 
-input,textarea{
+/* INPUTS */
+input, textarea, select{
     width:100%;
     padding:12px;
     margin-top:10px;
@@ -27,6 +30,7 @@ input,textarea{
     border:1px solid gray;
 }
 
+/* BUTTON */
 button{
     width:100%;
     padding:12px;
@@ -36,4 +40,107 @@ button{
     border-radius:8px;
     margin-top:15px;
     cursor:pointer;
+}
+
+/* BUTTON EFFECT */
+button:hover{
+    opacity:0.9;
+    transform:scale(1.02);
+    transition:0.2s;
+}
+
+/* ADMIN DASHBOARD CARDS */
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    width: 200px;
+    margin: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card.total { border-left: 6px solid blue; }
+.card.pending { border-left: 6px solid orange; }
+.card.resolved { border-left: 6px solid green; }
+
+/* COMPLAINT BOX */
+.complaint-box {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px 0;
+    text-align: left;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* BUTTONS */
+.resolve-btn {
+    background: green;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-btn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout-btn {
+    background: black;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+/* SEARCH BOX */
+input{
+    padding:10px;
+    width:60%;
+    margin-bottom:15px;
+}
+
+/* 🔥 MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+
+    .container {
+        width: 95%;
+        margin: 40px auto;
+    }
+
+    input, select, textarea, button {
+        width: 100%;
+    }
+
+    .stats {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        width: 90%;
+    }
+
+    .complaint-box {
+        font-size: 14px;
+    }
 }
