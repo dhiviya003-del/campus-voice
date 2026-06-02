@@ -61,7 +61,8 @@ function submitComplaint() {
         dept,
         category,
         priority,
-        complaint
+        complaint,
+        status: "Pending"
     };
 
     let oldData = JSON.parse(localStorage.getItem("complaints")) || [];
@@ -69,4 +70,15 @@ function submitComplaint() {
 
     localStorage.setItem("complaints", JSON.stringify(oldData));
 
-    alert("Complaint Submitted
+    alert("Complaint Submitted Successfully!");
+
+    document.getElementById("name").value = "";
+    document.getElementById("dept").value = "";
+    document.getElementById("category").value = "";
+    document.getElementById("priority").value = "";
+    document.getElementById("complaint").value = "";
+}
+</script>
+
+</body>
+</html>
