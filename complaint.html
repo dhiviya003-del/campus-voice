@@ -74,10 +74,14 @@ function submitComplaint() {
         return;
     }
 
+    // 🔥 Complaint ID GENERATION
+    let id = "CV" + Date.now();
+
     let photoFile = document.getElementById("photo").files[0];
     let photoName = photoFile ? photoFile.name : "No Photo";
 
     let data = {
+        id,
         name,
         dept,
         category,
