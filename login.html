@@ -29,6 +29,10 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
+        #msg{
+            color:red;
+        }
     </style>
 </head>
 
@@ -69,6 +73,10 @@ function login(){
         document.getElementById("msg").innerHTML = "Fill all fields!";
         return;
     }
+
+    // 🔐 save session
+    localStorage.setItem("role", role);
+    localStorage.setItem("user", user);
 
     if(role === "student"){
         window.location.href = "Complaint.html";
