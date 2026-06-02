@@ -25,14 +25,23 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
-        button {
-            background-color: red;
+        .resolve-btn {
+            background: green;
             color: white;
             border: none;
             padding: 5px 10px;
-            margin-top: 10px;
-            cursor: pointer;
+            margin-right: 5px;
             border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -43,11 +52,16 @@
 
     <h1>Admin Panel</h1>
 
+    <h3 id="total"></h3>
+    <h3 id="pending"></h3>
+    <h3 id="resolved"></h3>
+
     <div id="complaintsContainer"></div>
 
 </div>
 
 <script>
+
 let data = JSON.parse(localStorage.getItem("complaints")) || [];
 
 let container = document.getElementById("complaintsContainer");
@@ -55,6 +69,18 @@ let container = document.getElementById("complaintsContainer");
 function renderComplaints() {
 
     container.innerHTML = "";
+
+    let pendingCount = data.filter(c => c.status === "Pending").length;
+    let resolvedCount = data.filter(c => c.status === "Resolved").length;
+
+    document.getElementById("total").innerHTML =
+        "Total Complaints: " + data.length;
+
+    document.getElementById("pending").innerHTML =
+        "Pending: " + pendingCount;
+
+    document.getElementById("resolved").innerHTML =
+        "Resolved: " + resolvedCount;
 
     if(data.length === 0){
         container.innerHTML = "<h3>No Complaints Found</h3>";
@@ -74,15 +100,35 @@ function renderComplaints() {
 
             <p><b>Priority:</b> ${c.priority}</p>
 
+            <p><b>Status:</b> ${c.status}</p>
+
             <p><b>Complaint:</b> ${c.complaint}</p>
 
-            <button onclick="deleteComplaint(${index})">
-                Delete
+            <button class="resolve-btn"
+            onclick="resolveComplaint(${index})">
+            Resolve
+            </button>
+
+            <button class="delete-btn"
+            onclick="deleteComplaint(${index})">
+            Delete
             </button>
 
         </div>
         `;
     });
+}
+
+function resolveComplaint(index){
+
+    data[index].status = "Resolved";
+
+    localStorage.setItem(
+        "complaints",
+        JSON.stringify(data)
+    );
+
+    renderComplaints();
 }
 
 function deleteComplaint(index){
@@ -96,3 +142,10 @@ function deleteComplaint(index){
 
     renderComplaints();
 }
+
+renderComplaints();
+
+</script>
+
+</body>
+</html>
