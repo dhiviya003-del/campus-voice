@@ -11,10 +11,33 @@
         }
 
         .container {
-            width: 80%;
+            width: 85%;
             margin: auto;
             text-align: center;
         }
+
+        /* 🔥 DASHBOARD CARDS */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            width: 200px;
+            margin: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .card.total { border-left: 6px solid blue; }
+        .card.pending { border-left: 6px solid orange; }
+        .card.resolved { border-left: 6px solid green; }
 
         input{
             padding:10px;
@@ -66,13 +89,16 @@
 
 <div class="container">
 
-    <h1>Admin Panel</h1>
+    <h1>Admin Dashboard</h1>
 
     <button class="logout-btn" onclick="logout()">Logout</button>
 
-    <h3 id="total"></h3>
-    <h3 id="pending"></h3>
-    <h3 id="resolved"></h3>
+    <!-- 🔥 DASHBOARD CARDS -->
+    <div class="stats">
+        <div class="card total" id="total"></div>
+        <div class="card pending" id="pending"></div>
+        <div class="card resolved" id="resolved"></div>
+    </div>
 
     <!-- 🔍 SEARCH -->
     <input type="text" id="search" placeholder="Search by ID or Name..." onkeyup="searchComplaint()">
@@ -94,13 +120,13 @@ function renderComplaints(list = data) {
     let resolvedCount = list.filter(c => c.status === "Resolved").length;
 
     document.getElementById("total").innerHTML =
-        "Total Complaints: " + list.length;
+        "Total<br>" + list.length;
 
     document.getElementById("pending").innerHTML =
-        "Pending: " + pendingCount;
+        "Pending<br>" + pendingCount;
 
     document.getElementById("resolved").innerHTML =
-        "Resolved: " + resolvedCount;
+        "Resolved<br>" + resolvedCount;
 
     if(list.length === 0){
         container.innerHTML = "<h3>No Complaints Found</h3>";
@@ -166,6 +192,7 @@ function deleteComplaint(index){
 }
 
 function logout(){
+    localStorage.removeItem("role");
     window.location.href = "Login.html";
 }
 
