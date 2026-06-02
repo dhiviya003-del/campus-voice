@@ -63,7 +63,6 @@
 <script>
 
 let data = JSON.parse(localStorage.getItem("complaints")) || [];
-
 let container = document.getElementById("complaintsContainer");
 
 function renderComplaints() {
@@ -102,6 +101,8 @@ function renderComplaints() {
 
             <p><b>Status:</b> ${c.status}</p>
 
+            <p><b>Photo:</b> ${c.photo || "No Photo"}</p>
+
             <p><b>Complaint:</b> ${c.complaint}</p>
 
             <button class="resolve-btn"
@@ -120,7 +121,6 @@ function renderComplaints() {
 }
 
 function resolveComplaint(index){
-
     data[index].status = "Resolved";
 
     localStorage.setItem(
@@ -132,7 +132,6 @@ function resolveComplaint(index){
 }
 
 function deleteComplaint(index){
-
     data.splice(index,1);
 
     localStorage.setItem(
