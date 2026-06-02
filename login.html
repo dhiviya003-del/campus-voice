@@ -3,6 +3,33 @@
 <head>
     <title>Login</title>
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        body{
+            font-family: Arial;
+            text-align: center;
+            background: #f0f2f5;
+        }
+
+        .container{
+            margin-top: 120px;
+        }
+
+        input, select{
+            padding: 10px;
+            width: 200px;
+            margin: 8px;
+        }
+
+        button{
+            padding: 10px 20px;
+            background: darkblue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -11,24 +38,46 @@
 
     <h1>Campus Voice Login</h1>
 
-    <input type="text" placeholder="Username">
+    <input type="text" id="username" placeholder="Username">
+    <br>
 
-    <input type="password" placeholder="Password">
+    <input type="password" id="password" placeholder="Password">
+    <br>
 
-    <select>
-        <option>Select Role</option>
-        <option>Student</option>
-        <option>HOD</option>
-        <option>Principal</option>
+    <select id="role">
+        <option value="">Select Role</option>
+        <option value="student">Student</option>
+        <option value="admin">HOD / Principal</option>
     </select>
 
     <br><br>
 
-    <a href="complaint.html">
-        <button>Login</button>
-    </a>
+    <button onclick="login()">Login</button>
+
+    <p id="msg"></p>
 
 </div>
+
+<script>
+function login(){
+
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+    let role = document.getElementById("role").value;
+
+    if(user === "" || pass === "" || role === ""){
+        document.getElementById("msg").innerHTML = "Fill all fields!";
+        return;
+    }
+
+    if(role === "student"){
+        window.location.href = "Complaint.html";
+    }
+    else if(role === "admin"){
+        window.location.href = "Admin.html";
+    }
+}
+</script>
 
 </body>
 </html>
