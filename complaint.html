@@ -74,14 +74,16 @@ function submitComplaint() {
         return;
     }
 
-    // 🔥 Complaint ID GENERATION
-    let id = "CV" + Date.now();
+    // 🔥 PROPER AUTO ID SYSTEM (CV-001 style)
+    let oldData = JSON.parse(localStorage.getItem("complaints")) || [];
+
+    let newId = "CV-" + String(oldData.length + 1).padStart(3, "0");
 
     let photoFile = document.getElementById("photo").files[0];
     let photoName = photoFile ? photoFile.name : "No Photo";
 
     let data = {
-        id,
+        id: newId,
         name,
         dept,
         category,
@@ -91,14 +93,9 @@ function submitComplaint() {
         status: "Pending"
     };
 
-    let oldData = JSON.parse(localStorage.getItem("complaints")) || [];
-
     oldData.push(data);
 
-    localStorage.setItem(
-        "complaints",
-        JSON.stringify(oldData)
-    );
+    localStorage.setItem("complaints", JSON.stringify(oldData));
 
     alert("Complaint Submitted Successfully!");
 
