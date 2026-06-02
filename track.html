@@ -1,1 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Track Complaint</title>
+    <link rel="stylesheet" href="style.css">
 
+    <style>
+        body {
+            font-family: Arial;
+            background: #f0f2f5;
+            text-align: center;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+
+        input {
+            padding: 10px;
+            width: 60%;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin-top: 10px;
+            background: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .box {
+            background: white;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Track Your Complaint</h1>
+
+    <input type="text" id="name" placeholder="Enter Your Name">
+    <br>
+
+    <button onclick="track()">Search</button>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+
+function track() {
+
+    let name = document.getElementById("name").value;
+    let data = JSON.parse(localStorage.getItem("complaints")) || [];
+
+    let resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = "";
+
+    let found = data.filter(c => c.name.toLowerCase() === name.toLowerCase());
+
+    if(found.length === 0){
+        resultDiv.innerHTML = "<h3>No Complaints Found</h3>";
+        return;
+    }
+
+    found.forEach(c => {
+
+        resultDiv.innerHTML += `
+        <div class="box">
+
+            <p><b>Name:</b> ${c.name}</p>
+            <p><b>Department:</b> ${c.dept}</p>
+            <p><b>Category:</b> ${c.category}</p>
+            <p><b>Priority:</b> ${c.priority}</p>
+            <p><b>Status:</b> ${c.status}</p>
+            <p><b>Complaint:</b> ${c.complaint}</p>
+
+        </div>
+        `;
+    });
+}
+
+</script>
+
+</body>
+</html>
