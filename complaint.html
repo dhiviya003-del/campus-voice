@@ -45,6 +45,10 @@
 
     <br><br>
 
+    <input type="file" id="photo" accept="image/*">
+
+    <br><br>
+
     <textarea id="complaint" placeholder="Enter Your Complaint"></textarea>
 
     <button onclick="submitComplaint()">Submit Complaint</button>
@@ -70,12 +74,16 @@ function submitComplaint() {
         return;
     }
 
+    let photoFile = document.getElementById("photo").files[0];
+    let photoName = photoFile ? photoFile.name : "No Photo";
+
     let data = {
         name,
         dept,
         category,
         priority,
         complaint,
+        photo: photoName,
         status: "Pending"
     };
 
@@ -95,6 +103,7 @@ function submitComplaint() {
     document.getElementById("category").value = "";
     document.getElementById("priority").value = "";
     document.getElementById("complaint").value = "";
+    document.getElementById("photo").value = "";
     document.getElementById("anonymous").checked = false;
 }
 </script>
