@@ -14,6 +14,15 @@
 
     <input type="text" id="name" placeholder="Your Name">
 
+    <br><br>
+
+    <label>
+        <input type="checkbox" id="anonymous">
+        Submit as Anonymous
+    </label>
+
+    <br><br>
+
     <input type="text" id="dept" placeholder="Department">
 
     <select id="category">
@@ -45,13 +54,18 @@
 <script>
 function submitComplaint() {
 
-    let name = document.getElementById("name").value;
+    let anonymous = document.getElementById("anonymous").checked;
+
+    let name = anonymous
+        ? "Anonymous"
+        : document.getElementById("name").value;
+
     let dept = document.getElementById("dept").value;
     let category = document.getElementById("category").value;
     let priority = document.getElementById("priority").value;
     let complaint = document.getElementById("complaint").value;
 
-    if(name === "" || dept === "" || category === "" || priority === "" || complaint === "") {
+    if(dept === "" || category === "" || priority === "" || complaint === "") {
         alert("Please fill all fields");
         return;
     }
@@ -66,9 +80,13 @@ function submitComplaint() {
     };
 
     let oldData = JSON.parse(localStorage.getItem("complaints")) || [];
+
     oldData.push(data);
 
-    localStorage.setItem("complaints", JSON.stringify(oldData));
+    localStorage.setItem(
+        "complaints",
+        JSON.stringify(oldData)
+    );
 
     alert("Complaint Submitted Successfully!");
 
@@ -77,6 +95,7 @@ function submitComplaint() {
     document.getElementById("category").value = "";
     document.getElementById("priority").value = "";
     document.getElementById("complaint").value = "";
+    document.getElementById("anonymous").checked = false;
 }
 </script>
 
