@@ -16,6 +16,12 @@
             text-align: center;
         }
 
+        input{
+            padding:10px;
+            width:60%;
+            margin-bottom:15px;
+        }
+
         .complaint-box {
             background: white;
             border-radius: 10px;
@@ -62,12 +68,14 @@
 
     <h1>Admin Panel</h1>
 
-    <!-- Logout Button -->
     <button class="logout-btn" onclick="logout()">Logout</button>
 
     <h3 id="total"></h3>
     <h3 id="pending"></h3>
     <h3 id="resolved"></h3>
+
+    <!-- 🔍 SEARCH -->
+    <input type="text" id="search" placeholder="Search by ID or Name..." onkeyup="searchComplaint()">
 
     <div id="complaintsContainer"></div>
 
@@ -78,15 +86,15 @@
 let data = JSON.parse(localStorage.getItem("complaints")) || [];
 let container = document.getElementById("complaintsContainer");
 
-function renderComplaints() {
+function renderComplaints(list = data) {
 
     container.innerHTML = "";
 
-    let pendingCount = data.filter(c => c.status === "Pending").length;
-    let resolvedCount = data.filter(c => c.status === "Resolved").length;
+    let pendingCount = list.filter(c => c.status === "Pending").length;
+    let resolvedCount = list.filter(c => c.status === "Resolved").length;
 
     document.getElementById("total").innerHTML =
-        "Total Complaints: " + data.length;
+        "Total Complaints: " + list.length;
 
     document.getElementById("pending").innerHTML =
         "Pending: " + pendingCount;
@@ -94,15 +102,17 @@ function renderComplaints() {
     document.getElementById("resolved").innerHTML =
         "Resolved: " + resolvedCount;
 
-    if(data.length === 0){
+    if(list.length === 0){
         container.innerHTML = "<h3>No Complaints Found</h3>";
         return;
     }
 
-    data.forEach((c,index)=>{
+    list.forEach((c,index)=>{
 
         container.innerHTML += `
         <div class="complaint-box">
+
+            <p><b>ID:</b> ${c.id}</p>
 
             <h3>Name: ${c.name}</h3>
 
@@ -118,14 +128,12 @@ function renderComplaints() {
 
             <p><b>Complaint:</b> ${c.complaint}</p>
 
-            <button class="resolve-btn"
-            onclick="resolveComplaint(${index})">
-            Resolve
+            <button class="resolve-btn" onclick="resolveComplaint(${index})">
+                Resolve
             </button>
 
-            <button class="delete-btn"
-            onclick="deleteComplaint(${index})">
-            Delete
+            <button class="delete-btn" onclick="deleteComplaint(${index})">
+                Delete
             </button>
 
         </div>
@@ -133,19 +141,27 @@ function renderComplaints() {
     });
 }
 
+function searchComplaint(){
+
+    let keyword = document.getElementById("search").value.toLowerCase();
+
+    let filtered = data.filter(c =>
+        c.id.toLowerCase().includes(keyword) ||
+        c.name.toLowerCase().includes(keyword)
+    );
+
+    renderComplaints(filtered);
+}
+
 function resolveComplaint(index){
     data[index].status = "Resolved";
-
     localStorage.setItem("complaints", JSON.stringify(data));
-
     renderComplaints();
 }
 
 function deleteComplaint(index){
     data.splice(index,1);
-
     localStorage.setItem("complaints", JSON.stringify(data));
-
     renderComplaints();
 }
 
