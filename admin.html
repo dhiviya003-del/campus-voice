@@ -25,10 +25,6 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
 
-        h1 {
-            color: darkblue;
-        }
-
         button {
             background-color: red;
             color: white;
@@ -38,10 +34,6 @@
             cursor: pointer;
             border-radius: 5px;
         }
-
-        button:hover {
-            background-color: darkred;
-        }
     </style>
 </head>
 
@@ -50,7 +42,6 @@
 <div class="container">
 
     <h1>Admin Panel</h1>
-    <p>Student Complaints</p>
 
     <div id="complaintsContainer"></div>
 
@@ -62,34 +53,46 @@ let data = JSON.parse(localStorage.getItem("complaints")) || [];
 let container = document.getElementById("complaintsContainer");
 
 function renderComplaints() {
+
     container.innerHTML = "";
 
-    if (data.length === 0) {
-        container.innerHTML = "<p>No complaints yet</p>";
+    if(data.length === 0){
+        container.innerHTML = "<h3>No Complaints Found</h3>";
         return;
     }
 
-    data.forEach((c, index) => {
-        container.innerHTML += `
-            <div class="complaint-box">
-                <h3>Name: ${c.name}</h3>
-                <p>Department: ${c.dept}</p>
-                <p>Complaint: ${c.complaint}</p>
+    data.forEach((c,index)=>{
 
-                <button onclick="deleteComplaint(${index})">Delete</button>
-            </div>
+        container.innerHTML += `
+        <div class="complaint-box">
+
+            <h3>Name: ${c.name}</h3>
+
+            <p><b>Department:</b> ${c.dept}</p>
+
+            <p><b>Category:</b> ${c.category}</p>
+
+            <p><b>Priority:</b> ${c.priority}</p>
+
+            <p><b>Complaint:</b> ${c.complaint}</p>
+
+            <button onclick="deleteComplaint(${index})">
+                Delete
+            </button>
+
+        </div>
         `;
     });
 }
 
-function deleteComplaint(index) {
-    data.splice(index, 1);
-    localStorage.setItem("complaints", JSON.stringify(data));
+function deleteComplaint(index){
+
+    data.splice(index,1);
+
+    localStorage.setItem(
+        "complaints",
+        JSON.stringify(data)
+    );
+
     renderComplaints();
 }
-
-renderComplaints();
-</script>
-
-</body>
-</html>
