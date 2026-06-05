@@ -252,6 +252,17 @@ function searchComplaint(){
 function updateStatus(index,status){
 
     data[index].status = status;
+   let notifications =
+JSON.parse(localStorage.getItem("notifications")) || [];
+
+notifications.push(
+"Complaint " + data[index].id + " changed to " + status
+);
+
+localStorage.setItem(
+"notifications",
+JSON.stringify(notifications)
+); 
 
     localStorage.setItem(
         "complaints",
