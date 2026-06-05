@@ -112,6 +112,9 @@
 </style>
 
 </head><body><div class="container"><h1>Campus Voice Admin Dashboard</h1>
+    <h3 id="notificationCount">
+🔔 Notifications (0)
+</h3>
 
 <button class="logout-btn" onclick="logout()">Logout</button>
 
@@ -134,6 +137,11 @@
 let data = JSON.parse(localStorage.getItem("complaints")) || [];
 
 let container = document.getElementById("complaintsContainer");
+    let notifications =
+JSON.parse(localStorage.getItem("notifications")) || [];
+
+document.getElementById("notificationCount").innerHTML =
+"🔔 Notifications (" + notifications.length + ")";
 
 function renderComplaints(list = data){
 
