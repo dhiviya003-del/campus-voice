@@ -115,6 +115,7 @@
     <h3 id="notificationCount">
 🔔 Notifications (0)
 </h3>
+    <div id="notificationList"></div>
 
 <button class="logout-btn" onclick="logout()">Logout</button>
 
@@ -142,6 +143,10 @@ JSON.parse(localStorage.getItem("notifications")) || [];
 
 document.getElementById("notificationCount").innerHTML =
 "🔔 Notifications (" + notifications.length + ")";
+    document.getElementById("notificationList").innerHTML =
+notifications.map(n =>
+"<p>🔔 " + n + "</p>"
+).join("");
 
 function renderComplaints(list = data){
 
