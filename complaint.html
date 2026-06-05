@@ -1,61 +1,64 @@
-<!DOCTYPE html>
-<html>
-
-<head>
+<!DOCTYPE html><html><head>
     <title>Complaint Form</title>
     <link rel="stylesheet" href="style.css">
-</head>
+</head><body><div class="container"><h1>Complaint Form</h1>
 
-<body>
+<input type="text" id="name" placeholder="Your Name">
 
-<div class="container">
+<br><br>
 
-    <h1>Complaint Form</h1>
+<label>
+    <input type="checkbox" id="anonymous">
+    Submit as Anonymous
+</label>
 
-    <input type="text" id="name" placeholder="Your Name">
+<br><br>
 
-    <br><br>
+<input type="text" id="regno" placeholder="Register Number">
 
-    <label>
-        <input type="checkbox" id="anonymous">
-        Submit as Anonymous
-    </label>
+<br><br>
 
-    <br><br>
+<input type="text" id="dept" placeholder="Department">
 
-    <input type="text" id="dept" placeholder="Department">
+<br><br>
 
-    <select id="category">
-        <option value="">Select Category</option>
-        <option>Infrastructure</option>
-        <option>Faculty</option>
-        <option>Transport</option>
-        <option>Hostel</option>
-        <option>Others</option>
-    </select>
+<select id="category">
+    <option value="">Select Category</option>
+    <option>Infrastructure</option>
+    <option>Hostel</option>
+    <option>Transport</option>
+    <option>Canteen</option>
+    <option>Library</option>
+    <option>Wi-Fi/Internet</option>
+    <option>Classroom Facilities</option>
+    <option>Faculty Related</option>
+    <option>Others</option>
+</select>
 
-    <br><br>
+<br><br>
 
-    <select id="priority">
-        <option value="">Select Priority</option>
-        <option>Low</option>
-        <option>Medium</option>
-        <option>High</option>
-    </select>
+<select id="priority">
+    <option value="">Select Priority</option>
+    <option>Low</option>
+    <option>Medium</option>
+    <option>High</option>
+    <option>Critical</option>
+</select>
 
-    <br><br>
+<br><br>
 
-    <input type="file" id="photo" accept="image/*">
+<input type="file" id="photo" accept="image/*">
 
-    <br><br>
+<br><br>
 
-    <textarea id="complaint" placeholder="Enter Your Complaint"></textarea>
+<textarea id="complaint" placeholder="Enter Your Complaint"></textarea>
 
-    <button onclick="submitComplaint()">Submit Complaint</button>
+<br><br>
 
-</div>
+<button onclick="submitComplaint()">Submit Complaint</button>
 
-<script>
+</div><script>
+
 function submitComplaint() {
 
     let anonymous = document.getElementById("anonymous").checked;
@@ -64,17 +67,17 @@ function submitComplaint() {
         ? "Anonymous"
         : document.getElementById("name").value;
 
+    let regno = document.getElementById("regno").value;
     let dept = document.getElementById("dept").value;
     let category = document.getElementById("category").value;
     let priority = document.getElementById("priority").value;
     let complaint = document.getElementById("complaint").value;
 
-    if(dept === "" || category === "" || priority === "" || complaint === "") {
+    if(regno === "" || dept === "" || category === "" || priority === "" || complaint === "") {
         alert("Please fill all fields");
         return;
     }
 
-    // 🔥 PROPER AUTO ID SYSTEM (CV-001 style)
     let oldData = JSON.parse(localStorage.getItem("complaints")) || [];
 
     let newId = "CV-" + String(oldData.length + 1).padStart(3, "0");
@@ -85,21 +88,24 @@ function submitComplaint() {
     let data = {
         id: newId,
         name,
+        regno,
         dept,
         category,
         priority,
         complaint,
         photo: photoName,
-        status: "Pending"
+        status: "Submitted",
+        date: new Date().toLocaleDateString()
     };
 
     oldData.push(data);
 
     localStorage.setItem("complaints", JSON.stringify(oldData));
 
-    alert("Complaint Submitted Successfully!");
+    alert("Complaint Submitted Successfully!\nComplaint ID: " + newId);
 
     document.getElementById("name").value = "";
+    document.getElementById("regno").value = "";
     document.getElementById("dept").value = "";
     document.getElementById("category").value = "";
     document.getElementById("priority").value = "";
@@ -107,7 +113,6 @@ function submitComplaint() {
     document.getElementById("photo").value = "";
     document.getElementById("anonymous").checked = false;
 }
-</script>
 
-</body>
+</script></body>
 </html>
