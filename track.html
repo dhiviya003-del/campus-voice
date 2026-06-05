@@ -104,15 +104,21 @@ function track(){
 
     found.forEach(c => {
 
-        let statusClass = "submitted";
+       let statusClass = "submitted";
 
-        if(c.status === "Pending"){
-            statusClass = "pending";
-        }
+if(
+   c.status === "Assigned" ||
+   c.status === "In Progress"
+){
+    statusClass = "pending";
+}
 
-        if(c.status === "Resolved"){
-            statusClass = "resolved";
-        }
+if(
+   c.status === "Resolved" ||
+   c.status === "Closed"
+){
+    statusClass = "resolved";
+}
 
         let priorityStyle = "";
 
@@ -150,6 +156,15 @@ function track(){
             <p><b>Complaint:</b></p>
 
             <p>${c.complaint}</p>
+            <p><b>Timeline:</b></p>
+
+<p>
+✅ Submitted <br>
+${c.status=="Assigned" || c.status=="In Progress" || c.status=="Resolved" || c.status=="Closed" ? "✅ Assigned" : "⭕ Assigned"} <br>
+${c.status=="In Progress" || c.status=="Resolved" || c.status=="Closed" ? "✅ In Progress" : "⭕ In Progress"} <br>
+${c.status=="Resolved" || c.status=="Closed" ? "✅ Resolved" : "⭕ Resolved"} <br>
+${c.status=="Closed" ? "✅ Closed" : "⭕ Closed"}
+</p>
 
         </div>
 
