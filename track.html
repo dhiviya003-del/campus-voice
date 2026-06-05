@@ -1,97 +1,161 @@
-<!DOCTYPE html>
-<html>
-<head>
+<!DOCTYPE html><html><head>
     <title>Track Complaint</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css"><style>
 
-    <style>
-        body {
-            font-family: Arial;
-            background: #f0f2f5;
-            text-align: center;
-        }
+    body{
+        font-family: Arial, sans-serif;
+        background:#f4f6f9;
+        text-align:center;
+    }
 
-        .container {
-            width: 80%;
-            margin: auto;
-        }
+    .container{
+        width:80%;
+        margin:auto;
+    }
 
-        input {
-            padding: 10px;
-            width: 60%;
-            margin-top: 20px;
-        }
+    input{
+        width:60%;
+        padding:12px;
+        margin-top:20px;
+        border:1px solid #ccc;
+        border-radius:5px;
+    }
 
-        button {
-            padding: 10px 15px;
-            margin-top: 10px;
-            background: blue;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+    button{
+        padding:12px 20px;
+        margin-top:10px;
+        background:#1e3a8a;
+        color:white;
+        border:none;
+        border-radius:5px;
+        cursor:pointer;
+    }
 
-        .box {
-            background: white;
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: left;
-        }
-    </style>
-</head>
+    .box{
+        background:white;
+        margin-top:20px;
+        padding:20px;
+        border-radius:10px;
+        text-align:left;
+        box-shadow:0px 2px 10px rgba(0,0,0,0.1);
+    }
 
-<body>
+    .submitted{
+        color:white;
+        background:#3498db;
+        padding:5px 10px;
+        border-radius:5px;
+    }
 
-<div class="container">
+    .pending{
+        color:white;
+        background:#f39c12;
+        padding:5px 10px;
+        border-radius:5px;
+    }
 
-    <h1>Track Your Complaint</h1>
+    .resolved{
+        color:white;
+        background:#27ae60;
+        padding:5px 10px;
+        border-radius:5px;
+    }
 
-    <input type="text" id="name" placeholder="Enter Your Name">
-    <br>
+    .critical{
+        color:red;
+        font-weight:bold;
+    }
 
-    <button onclick="track()">Search</button>
+</style>
 
-    <div id="result"></div>
+</head><body><div class="container"><h1>Track Your Complaint</h1>
 
-</div>
+<input type="text" id="name" placeholder="Enter Your Name">
 
-<script>
+<br>
 
-function track() {
+<button onclick="track()">Search</button>
+
+<div id="result"></div>
+
+</div><script>
+
+function track(){
 
     let name = document.getElementById("name").value;
+
     let data = JSON.parse(localStorage.getItem("complaints")) || [];
 
     let resultDiv = document.getElementById("result");
+
     resultDiv.innerHTML = "";
 
-    let found = data.filter(c => c.name.toLowerCase() === name.toLowerCase());
+    let found = data.filter(c =>
+        c.name.toLowerCase() === name.toLowerCase()
+    );
 
     if(found.length === 0){
-        resultDiv.innerHTML = "<h3>No Complaints Found</h3>";
+
+        resultDiv.innerHTML =
+        "<h3>No Complaints Found</h3>";
+
         return;
     }
 
     found.forEach(c => {
 
+        let statusClass = "submitted";
+
+        if(c.status === "Pending"){
+            statusClass = "pending";
+        }
+
+        if(c.status === "Resolved"){
+            statusClass = "resolved";
+        }
+
+        let priorityStyle = "";
+
+        if(c.priority === "Critical"){
+            priorityStyle = "critical";
+        }
+
         resultDiv.innerHTML += `
+
         <div class="box">
 
+            <h3>Complaint ID: ${c.id}</h3>
+
             <p><b>Name:</b> ${c.name}</p>
+
+            <p><b>Register No:</b> ${c.regno || "-"}</p>
+
             <p><b>Department:</b> ${c.dept}</p>
+
             <p><b>Category:</b> ${c.category}</p>
-            <p><b>Priority:</b> ${c.priority}</p>
-            <p><b>Status:</b> ${c.status}</p>
-            <p><b>Complaint:</b> ${c.complaint}</p>
+
+            <p class="${priorityStyle}">
+                <b>Priority:</b> ${c.priority}
+            </p>
+
+            <p>
+                <b>Status:</b>
+                <span class="${statusClass}">
+                    ${c.status}
+                </span>
+            </p>
+
+            <p><b>Date:</b> ${c.date || "-"}</p>
+
+            <p><b>Complaint:</b></p>
+
+            <p>${c.complaint}</p>
 
         </div>
+
         `;
     });
+
 }
 
-</script>
-
-</body>
-</html>
+</script></body></html>
