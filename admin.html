@@ -209,11 +209,11 @@ function renderComplaints(list = data){
             <p>${c.complaint}</p>
 
            <select onchange="updateStatus(${index}, this.value)">
-    <option value="Submitted">Submitted</option>
-    <option value="Assigned">Assigned</option>
-    <option value="In Progress">In Progress</option>
-    <option value="Resolved">Resolved</option>
-    <option value="Closed">Closed</option>
+   <option value="Submitted" ${c.status=="Submitted"?"selected":""}>Submitted</option>
+<option value="Assigned" ${c.status=="Assigned"?"selected":""}>Assigned</option>
+<option value="In Progress" ${c.status=="In Progress"?"selected":""}>In Progress</option>
+<option value="Resolved" ${c.status=="Resolved"?"selected":""}>Resolved</option>
+<option value="Closed" ${c.status=="Closed"?"selected":""}>Closed</option>
 </select><br><br>
 
 <button class="delete-btn"
