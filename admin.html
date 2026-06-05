@@ -1,126 +1,155 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html>
 <head>
-    <title>Admin Panel</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css"><style>
+    body{
+        font-family:Arial,sans-serif;
+        background:#f4f6f9;
+        margin:0;
+    }
 
-    <style>
-        body {
-            font-family: Arial;
-            background-color: #f0f2f5;
-        }
+    .container{
+        width:90%;
+        margin:auto;
+        text-align:center;
+    }
 
-        .container {
-            width: 85%;
-            margin: auto;
-            text-align: center;
-        }
+    h1{
+        color:#1e3a8a;
+    }
 
-        /* 🔥 DASHBOARD CARDS */
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
+    .stats{
+        display:flex;
+        justify-content:center;
+        flex-wrap:wrap;
+        gap:15px;
+        margin:20px 0;
+    }
 
-        .card {
-            background: white;
-            padding: 20px;
-            width: 200px;
-            margin: 10px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            font-size: 18px;
-            font-weight: bold;
-        }
+    .card{
+        background:white;
+        padding:20px;
+        width:180px;
+        border-radius:10px;
+        box-shadow:0 2px 10px rgba(0,0,0,0.1);
+        font-weight:bold;
+    }
 
-        .card.total { border-left: 6px solid blue; }
-        .card.pending { border-left: 6px solid orange; }
-        .card.resolved { border-left: 6px solid green; }
+    .total{
+        border-left:6px solid blue;
+    }
 
-        input{
-            padding:10px;
-            width:60%;
-            margin-bottom:15px;
-        }
+    .pending{
+        border-left:6px solid orange;
+    }
 
-        .complaint-box {
-            background: white;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 10px 0;
-            text-align: left;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
+    .resolved{
+        border-left:6px solid green;
+    }
 
-        .resolve-btn {
-            background: green;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            margin-right: 5px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+    .critical{
+        border-left:6px solid red;
+    }
 
-        .delete-btn {
-            background: red;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+    input{
+        width:60%;
+        padding:12px;
+        border-radius:5px;
+        border:1px solid #ccc;
+    }
 
-        .logout-btn {
-            background: black;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-    </style>
-</head>
+    .complaint-box{
+        background:white;
+        margin-top:15px;
+        padding:20px;
+        border-radius:10px;
+        text-align:left;
+        box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    }
 
-<body>
+    .resolve-btn{
+        background:green;
+        color:white;
+        border:none;
+        padding:8px 12px;
+        border-radius:5px;
+        cursor:pointer;
+    }
 
-<div class="container">
+    .delete-btn{
+        background:red;
+        color:white;
+        border:none;
+        padding:8px 12px;
+        border-radius:5px;
+        cursor:pointer;
+    }
 
-    <h1>Admin Dashboard</h1>
+    .logout-btn{
+        background:black;
+        color:white;
+        border:none;
+        padding:10px 15px;
+        border-radius:5px;
+        cursor:pointer;
+        margin-bottom:10px;
+    }
 
-    <button class="logout-btn" onclick="logout()">Logout</button>
+    .status-pending{
+        color:orange;
+        font-weight:bold;
+    }
 
-    <!-- 🔥 DASHBOARD CARDS -->
-    <div class="stats">
-        <div class="card total" id="total"></div>
-        <div class="card pending" id="pending"></div>
-        <div class="card resolved" id="resolved"></div>
-    </div>
+    .status-resolved{
+        color:green;
+        font-weight:bold;
+    }
 
-    <!-- 🔍 SEARCH -->
-    <input type="text" id="search" placeholder="Search by ID or Name..." onkeyup="searchComplaint()">
+    .priority-critical{
+        color:red;
+        font-weight:bold;
+    }
+</style>
 
-    <div id="complaintsContainer"></div>
+</head><body><div class="container"><h1>Campus Voice Admin Dashboard</h1>
 
+<button class="logout-btn" onclick="logout()">Logout</button>
+
+<div class="stats">
+    <div class="card total" id="total"></div>
+    <div class="card pending" id="pending"></div>
+    <div class="card resolved" id="resolved"></div>
+    <div class="card critical" id="critical"></div>
 </div>
 
-<script>
+<input type="text"
+       id="search"
+       placeholder="Search by Complaint ID or Name"
+       onkeyup="searchComplaint()">
+
+<div id="complaintsContainer"></div>
+
+</div><script>
 
 let data = JSON.parse(localStorage.getItem("complaints")) || [];
+
 let container = document.getElementById("complaintsContainer");
 
-function renderComplaints(list = data) {
+function renderComplaints(list = data){
 
     container.innerHTML = "";
 
-    let pendingCount = list.filter(c => c.status === "Pending").length;
-    let resolvedCount = list.filter(c => c.status === "Resolved").length;
+    let pendingCount =
+        data.filter(c => c.status !== "Resolved").length;
+
+    let resolvedCount =
+        data.filter(c => c.status === "Resolved").length;
+
+    let criticalCount =
+        data.filter(c => c.priority === "Critical").length;
 
     document.getElementById("total").innerHTML =
-        "Total<br>" + list.length;
+        "Total<br>" + data.length;
 
     document.getElementById("pending").innerHTML =
         "Pending<br>" + pendingCount;
@@ -128,48 +157,78 @@ function renderComplaints(list = data) {
     document.getElementById("resolved").innerHTML =
         "Resolved<br>" + resolvedCount;
 
+    document.getElementById("critical").innerHTML =
+        "Critical<br>" + criticalCount;
+
     if(list.length === 0){
-        container.innerHTML = "<h3>No Complaints Found</h3>";
+        container.innerHTML =
+        "<h3>No Complaints Found</h3>";
         return;
     }
 
     list.forEach((c,index)=>{
 
+        let statusClass =
+            c.status === "Resolved"
+            ? "status-resolved"
+            : "status-pending";
+
+        let priorityClass =
+            c.priority === "Critical"
+            ? "priority-critical"
+            : "";
+
         container.innerHTML += `
+
         <div class="complaint-box">
 
-            <p><b>ID:</b> ${c.id}</p>
+            <h3>${c.id}</h3>
 
-            <h3>Name: ${c.name}</h3>
+            <p><b>Name:</b> ${c.name}</p>
+
+            <p><b>Register No:</b> ${c.regno || "-"}</p>
 
             <p><b>Department:</b> ${c.dept}</p>
 
             <p><b>Category:</b> ${c.category}</p>
 
-            <p><b>Priority:</b> ${c.priority}</p>
+            <p class="${priorityClass}">
+                <b>Priority:</b> ${c.priority}
+            </p>
 
-            <p><b>Status:</b> ${c.status}</p>
+            <p class="${statusClass}">
+                <b>Status:</b> ${c.status}
+            </p>
+
+            <p><b>Date:</b> ${c.date || "-"}</p>
 
             <p><b>Photo:</b> ${c.photo || "No Photo"}</p>
 
-            <p><b>Complaint:</b> ${c.complaint}</p>
+            <p><b>Complaint:</b></p>
 
-            <button class="resolve-btn" onclick="resolveComplaint(${index})">
+            <p>${c.complaint}</p>
+
+            <button class="resolve-btn"
+                    onclick="resolveComplaint(${index})">
                 Resolve
             </button>
 
-            <button class="delete-btn" onclick="deleteComplaint(${index})">
+            <button class="delete-btn"
+                    onclick="deleteComplaint(${index})">
                 Delete
             </button>
 
         </div>
+
         `;
     });
 }
 
 function searchComplaint(){
 
-    let keyword = document.getElementById("search").value.toLowerCase();
+    let keyword =
+    document.getElementById("search")
+    .value.toLowerCase();
 
     let filtered = data.filter(c =>
         c.id.toLowerCase().includes(keyword) ||
@@ -180,25 +239,37 @@ function searchComplaint(){
 }
 
 function resolveComplaint(index){
+
     data[index].status = "Resolved";
-    localStorage.setItem("complaints", JSON.stringify(data));
+
+    localStorage.setItem(
+        "complaints",
+        JSON.stringify(data)
+    );
+
     renderComplaints();
 }
 
 function deleteComplaint(index){
+
     data.splice(index,1);
-    localStorage.setItem("complaints", JSON.stringify(data));
+
+    localStorage.setItem(
+        "complaints",
+        JSON.stringify(data)
+    );
+
     renderComplaints();
 }
 
 function logout(){
+
     localStorage.removeItem("role");
-    window.location.href = "Login.html";
+
+    window.location.href = "login.html";
 }
 
 renderComplaints();
 
-</script>
-
-</body>
+</script></body>
 </html>
