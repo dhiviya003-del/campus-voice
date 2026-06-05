@@ -99,6 +99,17 @@ function submitComplaint() {
     };
 
     oldData.push(data);
+     let notifications =
+JSON.parse(localStorage.getItem("notifications")) || [];
+
+notifications.push(
+"New Complaint Submitted : " + newId
+);
+
+localStorage.setItem(
+"notifications",
+JSON.stringify(notifications)
+);
 
     localStorage.setItem("complaints", JSON.stringify(oldData));
 
