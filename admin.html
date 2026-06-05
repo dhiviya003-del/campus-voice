@@ -208,15 +208,18 @@ function renderComplaints(list = data){
 
             <p>${c.complaint}</p>
 
-            <button class="resolve-btn"
-                    onclick="resolveComplaint(${index})">
-                Resolve
-            </button>
+           <select onchange="updateStatus(${index}, this.value)">
+    <option value="Submitted">Submitted</option>
+    <option value="Assigned">Assigned</option>
+    <option value="In Progress">In Progress</option>
+    <option value="Resolved">Resolved</option>
+    <option value="Closed">Closed</option>
+</select><br><br>
 
-            <button class="delete-btn"
-                    onclick="deleteComplaint(${index})">
-                Delete
-            </button>
+<button class="delete-btn"
+onclick="deleteComplaint(${index})">
+Delete
+</button>
 
         </div>
 
@@ -238,9 +241,9 @@ function searchComplaint(){
     renderComplaints(filtered);
 }
 
-function resolveComplaint(index){
+function updateStatus(index,status){
 
-    data[index].status = "Resolved";
+    data[index].status = status;
 
     localStorage.setItem(
         "complaints",
